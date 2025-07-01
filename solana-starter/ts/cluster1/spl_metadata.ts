@@ -10,7 +10,7 @@ import { createSignerFromKeypair, signerIdentity, publicKey } from "@metaplex-fo
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 
 // Define our Mint address
-const mint = publicKey("D5w4vCZDAx6eVjrM3ccDZ53kpfHeiP7FtwPKKQx9aXpE")
+const mint = publicKey("DNerTBaY7BLVUpkaFQ3YEkoPnGpqQtTJ8vaB4x3cS3XH")
 
 // Create a UMI connection
 const umi = createUmi('https://api.devnet.solana.com');
