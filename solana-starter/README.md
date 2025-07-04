@@ -1,6 +1,6 @@
 # Solana Starter
 
-This repository provides a comprehensive starter template for Solana development in both **TypeScript** and **Rust**. It includes scripts and programs for wallet management, airdrops, transfers, SPL tokens, NFTs, and on-chain program interaction, making it ideal for learning, prototyping, or bootstrapping Solana projects.
+A starter template for Solana development using **TypeScript**. This project includes scripts for working with wallets, SPL tokens, NFTs, and vaults on the Solana Devnet. It is ideal for learning, prototyping, or bootstrapping Solana projects.
 
 ---
 
@@ -8,146 +8,111 @@ This repository provides a comprehensive starter template for Solana development
 
 ```
 solana-starter/
-  ├── ts/                # TypeScript client scripts and tools
-  │   ├── prereqs/       # Prerequisite scripts (wallet, airdrop, transfer, enroll)
-  │   ├── programs/      # Anchor IDL for on-chain programs
-  │   ├── tools/         # Utility scripts (base58, wallet conversion, airdrop)
-  │   ├── cluster1/      # SPL token, NFT, and vault scripts
-  │   ├── wba-wallet.json# Example wallet file
-  │   ├── package.json   # NPM dependencies and scripts
-  │   └── ...            # Config and lock files
-  ├── rs/                # Rust client and program code
-  │   ├── src/           # Rust source files
-  │   ├── Cargo.toml     # Rust dependencies and metadata
-  │   └── ...            # Build and config files
-  └── ...
+  ├── ts/
+  │   ├── cluster1/
+  │   │   ├── nft_image.ts              # Upload or manage NFT images
+  │   │   ├── nft_metadata.ts           # Create or update NFT metadata
+  │   │   ├── nft_mint.ts               # Mint new NFTs
+  │   │   ├── spl_init.ts               # Create a new SPL token mint
+  │   │   ├── spl_metadata.ts           # Manage SPL token metadata
+  │   │   ├── spl_mint.ts               # Mint SPL tokens to an account
+  │   │   ├── spl_transfer.ts           # Transfer SPL tokens between accounts
+  │   │   ├── vault_close.ts            # Close a vault account
+  │   │   ├── vault_deposit.ts          # Deposit SOL into a vault
+  │   │   ├── vault_deposit_nft.ts      # Deposit NFTs into a vault
+  │   │   ├── vault_deposit_spl.ts      # Deposit SPL tokens into a vault
+  │   │   ├── vault_init.ts             # Initialize a new vault
+  │   │   ├── vault_withdraw.ts         # Withdraw SOL from a vault
+  │   │   ├── vault_withdraw_nft.ts     # Withdraw NFTs from a vault
+  │   │   ├── vault_withdraw_spl.ts     # Withdraw SPL tokens from a vault
+  │   ├── tools/                        # Utility scripts (not shown)
+  │   ├── wba-wallet.json               # Example wallet file (keep this secret!)
+  │   ├── package.json                  # NPM dependencies and scripts
+  │   ├── tsconfig.json                 # TypeScript configuration
+  │   └── ...                           # Other config and lock files
+  ├── generug.png                       # Example image asset
+  ├── README.md                         # Project documentation
+  └── ...                               # Root config and lock files
 ```
 
 ---
 
-## TypeScript Client
+## Getting Started
 
-### Overview
+### 1. Install Dependencies
 
-The `ts/` directory contains scripts for:
+```sh
+cd ts
+npm install
+# or
+yarn install
+```
 
-- **Wallet management**: Generate, import, and export Solana wallets.
-- **Airdrop and transfer**: Request SOL from the Devnet faucet and transfer SOL.
-- **Program interaction**: Enroll and update accounts on the WBA Prereq program.
-- **SPL tokens & NFTs**: Mint, transfer, and manage SPL tokens and NFTs.
-- **Vault operations**: Deposit, withdraw, and manage assets in a vault program.
+### 2. Wallet Setup
 
-### Key Scripts
-
-#### Prerequisite Scripts (`ts/prereqs/`)
-
-- `keygen.ts`: Generate a new Solana wallet and print the public/secret key.
-- `airdrop.ts`: Request 2 SOL from the Devnet faucet to your wallet.
-- `transfer.ts`: Transfer your wallet's entire balance (minus fees) to a specified address.
-- `enroll.ts`: Enroll your wallet in the WBA Prereq program (on-chain).
-
-#### Tools (`ts/tools/`)
-
-- `base58_to_wallet.ts`: Convert a base58 private key to a wallet array.
-- `wallet_to_base58.ts`: Convert a wallet array to a base58 private key.
-- `airdrop_to_wallet.ts`: Request an airdrop to a specified wallet.
-
-#### SPL, NFT, and Vault Scripts (`ts/cluster1/`)
-
-- `spl_init.ts`, `spl_mint.ts`, `spl_transfer.ts`, `spl_metadata.ts`: SPL token operations.
-- `nft_image.ts`, `nft_metadata.ts`, `nft_mint.ts`: NFT minting and metadata.
-- `vault_init.ts`, `vault_deposit.ts`, `vault_withdraw.ts`, `vault_close.ts`, etc.: Vault program operations for SOL, SPL, and NFTs.
-
-#### Program IDL (`ts/programs/`)
-
-- `wba_prereq.ts`: Anchor IDL for the WBA Prereq program, which supports `complete` and `update` instructions for on-chain enrollment.
-
-### Usage
-
-1. **Install dependencies**:
-   ```sh
-   cd solana-starter/ts
-   yarn install
-   # or
-   npm install
-   ```
-
-2. **Configure your wallet**: Place your keypair as `wba-wallet.json` or `dev-wallet.json` in the `ts/` directory.
-
-3. **Run scripts**:
-   ```sh
-   yarn keygen
-   yarn airdrop
-   yarn transfer
-   yarn enroll
-   # Or use ts-node directly:
-   npx ts-node prereqs/airdrop.ts
-   ```
-
-4. **SPL, NFT, and Vault operations**:
-   ```sh
-   yarn spl_init
-   yarn spl_mint
-   yarn nft_mint
-   yarn vault_init
-   # ...and more (see package.json scripts)
-   ```
+- Place your Solana wallet keypair as `wba-wallet.json` in the `ts/` directory.
+- You can generate one with:
+  ```sh
+  solana-keygen new -o wba-wallet.json
+  ```
+- Fund your wallet with Devnet SOL:
+  ```sh
+  solana airdrop 2 --keypair wba-wallet.json
+  ```
 
 ---
 
-## Rust Client
+## Script Usage
 
-### Overview
+All scripts are run from the `ts/` directory using `ts-node`:
 
-The `rs/` directory contains Rust code for:
+```sh
+npx ts-node cluster1/<script_name>.ts
+```
 
-- **Wallet management**: Key generation, base58 conversion.
-- **Airdrop and transfer**: Request SOL and transfer funds.
-- **Program interaction**: Enroll and update accounts on the WBA Prereq program.
+### SPL Token Scripts
 
-### Key Files
+- `spl_init.ts` – Create a new SPL token mint.
+- `spl_mint.ts` – Mint tokens to your associated token account.
+- `spl_transfer.ts` – Transfer tokens to another account.
+- `spl_metadata.ts` – Manage SPL token metadata.
 
-- `src/prereqs.rs`: Contains test functions for wallet, airdrop, transfer, and program interaction.
-- `Cargo.toml`: Lists dependencies (`solana-sdk`, `solana-client`, `bs58`, etc.).
+### NFT Scripts
 
-### Usage
+- `nft_image.ts` – Upload or manage NFT images.
+- `nft_metadata.ts` – Create or update NFT metadata.
+- `nft_mint.ts` – Mint new NFTs.
 
-1. **Install Rust and dependencies** (see [rustup.rs](https://rustup.rs/)).
-2. **Configure your wallet**: Place your keypair as `dev-wallet.json` or `wba-wallet.json` in the `rs/` directory.
-3. **Run tests**:
-   ```sh
-   cargo test -- --nocapture
-   ```
-   This will execute all the test functions, printing output for each operation.
+### Vault Scripts
 
----
-
-## On-Chain Program: WBA Prereq
-
-- The WBA Prereq program allows users to enroll and update their on-chain account with a GitHub username.
-- The Anchor IDL is provided in `ts/programs/wba_prereq.ts`.
-- The program expects a PDA derived from `["prereq", user_pubkey]`.
-
----
-
-## Assignment Goals
-
-- **Learn Solana wallet management**: Key generation, import/export, and base58 encoding.
-- **Interact with the Solana Devnet**: Request airdrops, check balances, and transfer SOL.
-- **Work with Solana programs**: Enroll and update accounts using both Rust and TypeScript clients.
-- **Explore SPL tokens, NFTs, and vaults**: Mint, transfer, and manage assets on Solana.
+- `vault_init.ts` – Initialize a new vault.
+- `vault_deposit.ts` – Deposit SOL into a vault.
+- `vault_deposit_spl.ts` – Deposit SPL tokens into a vault.
+- `vault_deposit_nft.ts` – Deposit NFTs into a vault.
+- `vault_withdraw.ts` – Withdraw SOL from a vault.
+- `vault_withdraw_spl.ts` – Withdraw SPL tokens from a vault.
+- `vault_withdraw_nft.ts` – Withdraw NFTs from a vault.
+- `vault_close.ts` – Close a vault account.
 
 ---
 
-## References
+## Notes
+
+- All scripts use the Solana Devnet.
+- Make sure your wallet has enough SOL for transaction fees.
+- Update script parameters (mint addresses, recipient addresses, etc.) as needed in each script.
+
+---
+
+## Resources
 
 - [Solana Docs](https://docs.solana.com/)
 - [Solana Cookbook](https://solanacookbook.com/)
-- [Anchor Framework](https://book.anchor-lang.com/)
-- [Web3.js](https://solana-labs.github.io/solana-web3.js/)
+- [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/)
+- [@solana/spl-token](https://spl.solana.com/token)
 
 ---
 
 ## License
 
-MIT 
+MIT
