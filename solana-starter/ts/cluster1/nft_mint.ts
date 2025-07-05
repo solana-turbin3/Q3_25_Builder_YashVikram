@@ -20,7 +20,7 @@ const mint = generateSigner(umi);
         mint,
         name: "bestrugever",
         symbol: "brg",
-        uri: "",
+        uri: "https://arweave.net/3h8x6jLMo5u418WAg7s8eJrpotP7Lnpm9bJcAkVRfRWc",
         sellerFeeBasisPoints: percentAmount(10)
     })
     let result = await tx.sendAndConfirm(umi);

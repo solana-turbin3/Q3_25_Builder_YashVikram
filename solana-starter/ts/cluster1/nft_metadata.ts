@@ -17,7 +17,7 @@ umi.use(signerIdentity(signer));
         // Follow this JSON structure
         // https://docs.metaplex.com/programs/token-metadata/changelog/v1.0#json-structure
 
-        const image = "";
+        const image = "https://arweave.net/DXCvUJ59vfPg1hnVUHSa3GQyZbfb9Tg3LJxwzvQS1YcH";
         const metadata = {
             name: "bestrugever",
             symbol: "brg",
