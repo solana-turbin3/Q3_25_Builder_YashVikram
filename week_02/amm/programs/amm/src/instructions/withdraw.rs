@@ -31,7 +31,7 @@ pub struct Withdraw<'info> {
         has_one = mint_x,
         has_one = mint_y,
         seeds = [b"config", &config.seed.to_le_bytes().as_ref()],
-        bump
+        bump = config.config_bump
     )]
     pub config: Account<'info, Config>,
 
@@ -89,6 +89,7 @@ pub struct Withdraw<'info> {
 
 impl<'info> Withdraw<'info> {
     pub fn withdraw(&mut self, amount: u64, min_x: u64, min_y: u64) -> Result<()> {
+        // amount: this is the amount of lp tokens the user is ready to trade for (i.e. that would be burned by us)
         require!(self.config.locked == false, AmmError::PoolLocked);
         require!(amount > 0, AmmError::InvalidAmount);
 

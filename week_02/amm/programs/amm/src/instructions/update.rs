@@ -35,7 +35,7 @@ impl<'info> Update<'info> {
         require!(self.config.locked, AmmError::PoolUnlocked);
         require!(self.config.authority == Some(self.user.key()), AmmError::InvalidAuthority);
 
-        self.config.locked = true;
+        self.config.locked = false;
         Ok(())
     }
 }

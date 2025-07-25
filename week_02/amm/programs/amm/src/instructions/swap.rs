@@ -123,25 +123,27 @@ impl<'info> Swap<'info> {
         Ok(())
     }
 
-    pub fn withdraw_tokens_being_bought(&mut self, is_x:bool, amount: u64)->Result<()>{
-
-        let (from,to) = match is_x{
-            true => (self.vault_x.to_account_info(), self.user_x.to_account_info()),
-            false => (self.vault_y.to_account_info(), self.user_y.to_account_info()),
+    pub fn withdraw_tokens_being_bought(&mut self, is_x: bool, amount: u64) -> Result<()> {
+        
+        // If is_x is true (user sold X), they now buy/withdraw Y.
+        // If is_x is false (user sold Y), they now buy/withdraw X.
+        let (from, to) = match is_x {
+            true => (self.vault_y.to_account_info(), self.user_y.to_account_info()),
+            false => (self.vault_x.to_account_info(), self.user_x.to_account_info()),
         };
-
+    
         let cpi_program = self.token_program.to_account_info();
-        let cpi_accounts = Transfer{
+        let cpi_accounts = Transfer {
             from,
             to,
             authority: self.config.to_account_info(),
         };
-
+    
         let seeds = &[&b"config"[..], &self.config.seed.to_le_bytes(), &[self.config.config_bump]];
         let signer_seeds = &[&seeds[..]];
-
+    
         let ctx = CpiContext::new_with_signer(cpi_program, cpi_accounts, signer_seeds);
-
+    
         transfer(ctx, amount)?;
         Ok(())
     }
